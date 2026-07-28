@@ -2,6 +2,14 @@
 
 Django + React (MUI) trip planner for property-carrying CMV drivers (70h / 8-day).
 
+## Live
+
+| | |
+|--|--|
+| **App** | https://spotter-hos-web.vercel.app |
+| **API** | https://spotter-hos-api.vercel.app |
+| **GitHub** | https://github.com/MHunain-Official/spotter-hos |
+
 ## Features
 
 - Inputs: current / pickup / dropoff / cycle used / trip start / adverse toggle
