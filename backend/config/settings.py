@@ -109,11 +109,13 @@ else:
     }
 
 # Local/unit-test escape hatch when Postgres is unavailable.
+# On Vercel, SQLite must live under /tmp (ephemeral — prefer DATABASE_URL).
 if os.getenv("USE_SQLITE", "").lower() == "true":
+    sqlite_path = Path("/tmp/routelog.sqlite3") if ON_VERCEL else (BASE_DIR / "db.sqlite3")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": sqlite_path,
         }
     }
 

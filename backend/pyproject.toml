@@ -19,5 +19,4 @@ dependencies = [
 entrypoint = "config.wsgi:application"
 
 [tool.vercel.scripts]
-# Create tables on each production build (idempotent)
-build = "python manage.py migrate --noinput"
+build = "python build.py"
