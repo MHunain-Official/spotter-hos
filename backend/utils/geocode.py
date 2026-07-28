@@ -29,7 +29,14 @@ def geocode(query: str) -> dict[str, Any]:
         time.sleep(1.05 - elapsed)
 
     url = "https://nominatim.openstreetmap.org/search"
-    params = {"q": q, "format": "json", "limit": 1}
+    params = {
+        "q": q,
+        "format": "json",
+        "limit": 1,
+        # Prefer US results for CMV / FMCSA assessment, but still accept full query text
+        "countrycodes": "us",
+        "addressdetails": 1,
+    }
     headers = {"User-Agent": settings.NOMINATIM_USER_AGENT}
     try:
         resp = requests.get(url, params=params, headers=headers, timeout=20)
@@ -40,7 +47,24 @@ def geocode(query: str) -> dict[str, Any]:
         raise GeocodeError(f"Geocoding failed for '{q}': {exc}") from exc
 
     if not data:
-        raise GeocodeError(f"No results for '{q}'")
+        # Retry without country filter for Canada/Mexico edge cases or odd queries
+        try:
+            resp = requests.get(
+                url,
+                params={"q": q, "format": "json", "limit": 1},
+                headers=headers,
+                timeout=20,
+            )
+            _last_nominatim_call = time.time()
+            resp.raise_for_status()
+            data = resp.json()
+        except requests.RequestException as exc:
+            raise GeocodeError(f"Geocoding failed for '{q}': {exc}") from exc
+
+    if not data:
+        raise GeocodeError(
+            f"No results for '{q}'. Try a clearer city/state or full street address."
+        )
 
     hit = data[0]
     return {

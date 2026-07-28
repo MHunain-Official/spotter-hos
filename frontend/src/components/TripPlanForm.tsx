@@ -9,6 +9,7 @@ import {
   Typography,
   Slider,
   Alert,
+  Chip,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs, { Dayjs } from "dayjs";
@@ -20,23 +21,47 @@ type Props = {
   onSubmit: (payload: PlanTripRequest) => void;
 };
 
+const EXAMPLES = [
+  {
+    label: "Chicago → Dallas → Houston",
+    current: "Chicago, IL",
+    pickup: "Dallas, TX",
+    dropoff: "Houston, TX",
+  },
+  {
+    label: "LA → Phoenix → Denver",
+    current: "Los Angeles, CA",
+    pickup: "Phoenix, AZ",
+    dropoff: "Denver, CO",
+  },
+  {
+    label: "NYC → Philly → Atlanta",
+    current: "New York, NY",
+    pickup: "Philadelphia, PA",
+    dropoff: "Atlanta, GA",
+  },
+] as const;
+
 export default function TripPlanForm({ loading, error, onSubmit }: Props) {
-  const [current, setCurrent] = useState("Chicago, IL");
-  const [pickup, setPickup] = useState("Dallas, TX");
-  const [dropoff, setDropoff] = useState("Houston, TX");
+  const [current, setCurrent] = useState("");
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
   const [cycleUsed, setCycleUsed] = useState(12);
   const [start, setStart] = useState<Dayjs | null>(dayjs().hour(6).minute(0).second(0));
   const [adverse, setAdverse] = useState(false);
+
+  const canSubmit = current.trim() && pickup.trim() && dropoff.trim();
 
   return (
     <Box
       component="form"
       onSubmit={(e) => {
         e.preventDefault();
+        if (!canSubmit) return;
         onSubmit({
-          current_location: current,
-          pickup_location: pickup,
-          dropoff_location: dropoff,
+          current_location: current.trim(),
+          pickup_location: pickup.trim(),
+          dropoff_location: dropoff.trim(),
           current_cycle_used_hours: cycleUsed,
           trip_start: start ? start.toISOString() : null,
           adverse_conditions: adverse,
@@ -53,19 +78,42 @@ export default function TripPlanForm({ loading, error, onSubmit }: Props) {
           <Typography variant="h3" sx={{ fontSize: { xs: 26, md: 32 }, mt: 0.5 }}>
             Build the haul
           </Typography>
-          <Typography color="text.secondary" sx={{ mt: 0.75, maxWidth: 420 }}>
-            Locations + cycle hours in. Road route, rests, fuel, and ELD sheets out.
+          <Typography color="text.secondary" sx={{ mt: 0.75, maxWidth: 440 }}>
+            Enter <strong>any</strong> city or address for current, pickup, and dropoff.
+            We geocode + route the road path, then fill HOS daily logs.
           </Typography>
         </Box>
 
         {error && <Alert severity="error">{error}</Alert>}
 
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+          <Typography variant="caption" sx={{ width: "100%", color: "text.secondary" }}>
+            Optional quick examples:
+          </Typography>
+          {EXAMPLES.map((ex) => (
+            <Chip
+              key={ex.label}
+              label={ex.label}
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                setCurrent(ex.current);
+                setPickup(ex.pickup);
+                setDropoff(ex.dropoff);
+              }}
+              sx={{ cursor: "pointer" }}
+            />
+          ))}
+        </Box>
+
         <TextField
           label="Current location"
+          placeholder="e.g. Kansas City, MO or 123 Main St, Omaha, NE"
           value={current}
           onChange={(e) => setCurrent(e.target.value)}
           required
           fullWidth
+          helperText="Where the driver is now (any place Nominatim can resolve)"
         />
         <Box
           sx={{
@@ -75,18 +123,22 @@ export default function TripPlanForm({ loading, error, onSubmit }: Props) {
           }}
         >
           <TextField
-            label="Pickup"
+            label="Pickup location"
+            placeholder="e.g. warehouse or city"
             value={pickup}
             onChange={(e) => setPickup(e.target.value)}
             required
             fullWidth
+            helperText="Load point — any address/city"
           />
           <TextField
-            label="Dropoff"
+            label="Dropoff location"
+            placeholder="e.g. destination yard or city"
             value={dropoff}
             onChange={(e) => setDropoff(e.target.value)}
             required
             fullWidth
+            helperText="Unload point — any address/city"
           />
           <DateTimePicker
             label="Trip start"
@@ -131,7 +183,7 @@ export default function TripPlanForm({ loading, error, onSubmit }: Props) {
           type="submit"
           variant="contained"
           size="large"
-          disabled={loading}
+          disabled={loading || !canSubmit}
           sx={{ alignSelf: { sm: "flex-start" }, minWidth: 220 }}
         >
           {loading ? "Routing & planning…" : "Plan route & logs"}
