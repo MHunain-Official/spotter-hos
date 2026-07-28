@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: routelog
+      POSTGRES_USER: routelog
+      POSTGRES_PASSWORD: routelog
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U routelog -d routelog"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    profiles: ["stretch"]
+
+  api:
+    build: ./backend
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: routelog
+      POSTGRES_USER: routelog
+      POSTGRES_PASSWORD: routelog
+      DJANGO_DEBUG: "true"
+      ALLOWED_HOSTS: "*"
+      CORS_ALLOW_ALL: "true"
+      ORS_API_KEY: ${ORS_API_KEY:-}
+      CELERY_TASK_ALWAYS_EAGER: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+    profiles: ["full"]
+
+volumes:
+  pgdata:

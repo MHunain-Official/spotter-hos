@@ -1,0 +1,296 @@
+/* Faithful Drivers Daily Log paper form styles (matches blank-paper-log.png) */
+
+.paper-log {
+  --ink: #111;
+  --rule: #333;
+  --paper: #fff;
+  --muted: #555;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  padding: 14px 16px 16px;
+  max-width: 980px;
+  margin: 0 auto;
+  font-family: Manrope, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-x: auto;
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.12);
+}
+
+.paper-log__header {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.3fr;
+  gap: 10px;
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+.paper-log__title {
+  font-family: Syne, sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.paper-log__date {
+  text-align: center;
+}
+
+.paper-log__date-box {
+  display: inline-block;
+  min-width: 28px;
+  padding: 2px 6px;
+  border: 1px solid var(--ink);
+  margin: 0 2px;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+}
+
+.paper-log__date-box--year {
+  min-width: 44px;
+}
+
+.paper-log__date-labels {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.paper-log__filing {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.4;
+}
+
+.paper-log__fromto {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.paper-log__line-field {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.paper-log__underline {
+  flex: 1;
+  min-width: 120px;
+  border-bottom: 1px solid var(--ink);
+  padding: 0 4px 2px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.paper-log__field-caption {
+  width: 100%;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.paper-log__meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.paper-log__box {
+  border: 1.5px solid var(--ink);
+  min-height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 8px 4px;
+}
+
+.paper-log__box-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.paper-log__box-value--sm {
+  font-size: 13px;
+}
+
+.paper-log__box-label {
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.paper-log__carrier {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.paper-log__grid-wrap {
+  border: 1.5px solid var(--ink);
+  margin-bottom: 10px;
+  overflow-x: auto;
+}
+
+.paper-log__grid {
+  display: block;
+  min-width: 720px;
+}
+
+.paper-log__remarks {
+  border: 1.5px solid var(--ink);
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  min-height: 120px;
+}
+
+.paper-log__remarks-title {
+  font-family: Syne, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.paper-log__remarks-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 12px;
+}
+
+.paper-log__shipping {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.paper-log__ship-label {
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.paper-log__remark-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 11px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.paper-log__remark-list li {
+  margin-bottom: 3px;
+}
+
+.paper-log__remarks-note {
+  margin: 10px 0 0;
+  font-size: 9px;
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+}
+
+.paper-log__recap {
+  border: 1.5px solid var(--ink);
+  padding: 8px 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.paper-log__recap-heading {
+  font-family: Syne, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.paper-log__recap-today {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  font-size: 11px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.paper-log__recap-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.paper-log__recap-col {
+  border: 1px solid var(--ink);
+  padding: 6px 8px;
+}
+
+.paper-log__recap-col--muted {
+  background: #f7f7f7;
+}
+
+.paper-log__recap-col-title {
+  font-weight: 800;
+  font-size: 11px;
+  margin-bottom: 6px;
+  font-family: Syne, sans-serif;
+}
+
+.paper-log__recap-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  padding: 4px 0;
+  border-bottom: 1px dotted #bbb;
+}
+
+.paper-log__recap-row:last-child {
+  border-bottom: 0;
+}
+
+.paper-log__recap-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  min-width: 48px;
+  text-align: right;
+  border-bottom: 1px solid var(--ink);
+  padding: 0 4px;
+}
+
+.paper-log__recap-note {
+  font-size: 9px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .paper-log__header {
+    grid-template-columns: 1fr;
+  }
+
+  .paper-log__filing {
+    text-align: left;
+  }
+
+  .paper-log__meta-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .paper-log__box--wide {
+    grid-column: 1 / -1;
+  }
+
+  .paper-log__remarks-body {
+    grid-template-columns: 1fr;
+  }
+
+  .paper-log__recap-cols {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,23 @@
+[project]
+name = "routelog-api"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "Django==6.0.7",
+  "djangorestframework==3.17.1",
+  "django-cors-headers==4.9.0",
+  "psycopg[binary]==3.3.4",
+  "python-dotenv==1.2.2",
+  "requests==2.34.2",
+  "reportlab==5.0.0",
+  "celery==5.6.3",
+  "redis==8.0.1",
+]
+
+[tool.vercel]
+# manage.py lives in this directory (Root Directory = backend on Vercel)
+entrypoint = "config.wsgi:application"
+
+[tool.vercel.scripts]
+# Create tables on each production build (idempotent)
+build = "python manage.py migrate --noinput"
